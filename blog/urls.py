@@ -2,19 +2,16 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
-#from .import views
 from .views import IndexView
-from about.views import IndexView as BlogIndexView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('adminRoot/', admin.site.urls),
     path('', IndexView.as_view(),name="index"),
     path('testing/', IndexView.as_view(),name="testing"),
-    path('about/', BlogIndexView.as_view(),name="about"),
-    #path('about/', include('about.urls'),name="about"), # Tambahkan ini
-    path('frontend/', include('adminpanel.urls')),
+    path('about/', include(('about.urls', 'about'), namespace='about')),
     path('contactPage/', include('contact.urls')),
     path('singlePost/', include('singlepost.urls')),
+    path('admin/', include('adminpanel.urls')),
 ]
 
 # Tambahkan ini di bawah sekali untuk upload image ke folder MEDIA. Cek konfigurasi di settings.py:
