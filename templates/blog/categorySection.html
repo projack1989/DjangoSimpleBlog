@@ -1,0 +1,36 @@
+
+{% load static %}
+
+<!-- Trending Category Section -->
+<section id="trending-category" class="trending-category section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+    <div class="container" data-aos="fade-up">
+        <div class="row g-5">
+            {% for article_1 in arctile1 %}
+            <div class="col-lg-12">
+
+                <div class="post-entry lg"> 
+                <div class="post-meta"><span class="date">{{article_1.d_created_on}}</span></div>
+                <h2><a href="blog-details.html">{{article_1.s_title}}</a></h2>
+                <p class="mb-4 d-block">
+                    {{article_1.s_description}}
+                </p>
+
+                <div class="d-flex align-items-center author">
+                    <div class="photo"><img src="assets/img/person-1.jpg" alt="" class="img-fluid"></div>
+                    <div class="name">
+                    <h3 class="m-0 p-0">{{article_1.s_created_by}}</h3>
+                    </div>
+                </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div> <!-- End .row -->
+    </div>
+
+    </div>
+
+</section><!-- /Trending Category Section -->

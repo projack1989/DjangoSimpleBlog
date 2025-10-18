@@ -1,0 +1,27 @@
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include "blog/headFile.html" %}
+</head>
+
+<body class="index-page">
+  {% include "blog/header.html" %}
+  
+
+  <main class="main">
+    {% block baseWithSection %}
+    {% endblock %}
+
+    {% block IsiContent %}
+    {% endblock %}
+  </main>
+
+  {% include "blog/footer.html" %}
+  {% include "blog/jsFooter.html" %}
+
+
+</body>
+
+</html>

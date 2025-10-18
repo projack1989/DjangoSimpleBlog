@@ -1,0 +1,43 @@
+{% load static %}
+<!-- Culture Category Section -->
+    <section id="culture-category" class="culture-category section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <div class="section-title-container d-flex align-items-center justify-content-between">
+          <h2>About - {{Heading}}</h2>
+          <p><a href="categories.html">See All Culture</a></p>
+        </div>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        {% for about in aboutList %}
+        <div class="row">
+
+          <div class="col-md-12">
+            
+            <div class="d-lg-flex post-entry">
+              <a href="blog-details.html" class="me-4 thumbnail mb-4 mb-lg-0 d-inline-block">
+                <img src="{% static 'assets/img/post-landscape-6.jpg' %}" alt="" class="img-fluid">
+              </a>
+              <div>
+                <div class="post-meta"><span class="date">About</span> <span class="mx-1">•</span> <span>{{about.d_created_on}}</span></div>
+                <h3><a href="blog-details.html">{{about.s_title}}</a></h3>
+                <p>
+                  {{about.s_description}}
+                </p>
+                <div class="d-flex align-items-center author">
+                  <div class="photo"><img src="assets/img/person-2.jpg" alt="" class="img-fluid"></div>
+                  <div class="name">
+                    <h3 class="m-0 p-0">Wade Warren</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+      </div>
+
+    </section><!-- /Culture Category Section -->

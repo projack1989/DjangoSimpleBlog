@@ -1,0 +1,9 @@
+{% extends 'blog/base_with_sections.html' %}
+{% load static %}
+
+{% block IsiContent %}
+    {% include "blog/categorySection.html" %}
+    {% include "about/aboutPage.html" %}
+    {% include "blog/businessCategorySection.html" %}    
+    {% include "blog/lifeCategorySection.html" %}
+{% endblock %}
