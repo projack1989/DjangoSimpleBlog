@@ -11,7 +11,7 @@ urlpatterns = [
     path('about/', include(('about.urls', 'about'), namespace='about')),
     path('contactPage/', include('contact.urls')),
     path('singlePost/', include('singlepost.urls')),
-    path('admin/', include('adminpanel.urls')),
+    path('login/', include('adminpanel.urls')),
 ]
 
 # Tambahkan ini di bawah sekali untuk upload image ke folder MEDIA. Cek konfigurasi di settings.py:
