@@ -1,0 +1,47 @@
+{% extends 'templateadmin/templateadmin.html' %}
+{% load static %}
+{% block IsiAdmin %}
+<div class="container-fluid">
+<h3>Edit Slider</h3>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  {% if form.non_field_errors %}
+  <div class="alert alert-danger">
+    {% for error in form.non_field_errors %}
+      <div>{{ error }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="form-group">
+    <label>{{ form.s_nama_gambar.label }}</label><br>
+    <img src="/media/{{ slider.s_nama_gambar }}" width="150" class="img-thumbnail mb-2">
+    <input type="file" name="s_nama_gambar" class="form-control">
+    {% for error in form.s_nama_gambar.errors %}
+      <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="form-group">
+    <label>{{ form.s_description.label }}</label>
+    <textarea name="s_description" class="form-control" rows="3">{{ form.s_description.value }}</textarea>
+    {% for error in form.s_description.errors %}
+      <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="form-group">
+    <label>{{ form.n_istatus.label }}</label>
+    {{ form.n_istatus }}
+    {% for error in form.n_istatus.errors %}
+      <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+</form>
+
+</div>
+{% endblock %}

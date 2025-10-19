@@ -1,0 +1,75 @@
+{% extends 'templateadmin/templateadmin.html' %}
+{% load static %}
+{% block IsiAdmin %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Slider Banner</h1>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <a href="{% url 'adminpanel:addSlider' %}" class="m-0 font-weight-bold text-primary">Add Slider Banner</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Gambar</th>
+                            <th>Deskripsi</th>
+                            <th>Status</th>
+                            <th>Created By</th>
+                            <th>Created On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Gambar</th>
+                            <th>Deskripsi</th>
+                            <th>Status</th>
+                            <th>Created By</th>
+                            <th>Created On</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for slider in tampilSliderImage %}
+                        <tr>
+                            <td>
+                                <img class="img-thumbnail" src="/media/{{ slider.s_nama_gambar }}">
+                            </td>
+                            <td>{{ slider.s_description }}</td>
+                            <td>
+                                
+                                {% if slider.n_istatus == '1' %}
+                                    Aktif
+                                {% elif slider.n_istatus == '0' %}
+                                    Non Aktif
+                                {% else %}
+                                    Tidak Diketahui
+                                {% endif %}
+                            </td>
+                            <td>{{ slider.s_created_by }}</td>
+                            <td>{{ slider.s_created_on }}</td>
+                            <td>
+                                <a href="{% url 'adminpanel:editSlider' slider.s_id_slider_banner %}" class="btn btn-success btn-circle btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'adminpanel:deleteSlider' slider.s_id_slider_banner %}" class="btn btn-success btn-circle btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid ++-->
+{% endblock %}

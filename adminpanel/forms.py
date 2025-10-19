@@ -1,5 +1,6 @@
 from django import forms
 from .models import TmUser
+from blog.models import SliderBanner
 from django.contrib.auth.hashers import make_password
 
 class RegisterTmUser(forms.ModelForm):
@@ -117,3 +118,73 @@ class LoginTmUser(forms.Form):
                 }
             ),
         }
+
+class SliderBannerForm(forms.ModelForm):
+    class Meta:
+        model = SliderBanner
+        fields = ['s_nama_gambar', 's_description', 'n_istatus']
+        labels = {
+            's_nama_gambar': 'Gambar Banner',
+            's_description': 'Deskripsi Banner',
+            'n_istatus': 'Status Banner',
+        }
+        widgets = {
+            's_description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Tulis deskripsi banner di sini...',
+                'rows': 3
+            }),
+            'n_istatus': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+        }
+        error_messages = {
+            's_description': {
+                'required': "Deskripsi tidak boleh kosong.",
+                'max_length': "Deskripsi terlalu panjang, maksimal 255 karakter.",
+            },
+            'n_istatus': {
+                'required': "Silakan pilih status banner.",
+            },
+        }
+
+    # Validasi khusus untuk s_description
+    def clean_s_description(self):
+        desc = self.cleaned_data.get('s_description', '').strip()
+        if not desc:
+            raise forms.ValidationError("Kamu belum mengisi deskripsi banner.")
+        if len(desc) < 10:
+            raise forms.ValidationError("Deskripsi harus minimal 10 karakter.")
+        return desc
+
+    # Validasi khusus untuk gambar
+    def clean_s_nama_gambar(self):
+        image = self.cleaned_data.get('s_nama_gambar')
+        if not image:
+            raise forms.ValidationError("Kamu belum memilih file gambar.")
+        if hasattr(image, 'size') and image.size > 2 * 1024 * 1024:
+            raise forms.ValidationError("Ukuran gambar maksimal 2MB.")
+        if image:
+            if not image.name.lower().endswith(('.jpg', '.jpeg', '.png')):
+                raise forms.ValidationError("Hanya boleh upload file JPG atau PNG")
+        return image
+
+    # Validasi gabungan antar field
+    def clean(self):
+        cleaned_data = super().clean()
+        desc = cleaned_data.get('s_description')
+        status = cleaned_data.get('n_istatus')
+        #validasi gambar
+        errors_s_nama_gambar = self._errors.get('s_nama_gambar')
+        if errors_s_nama_gambar and any("Upload a valid image" in e for e in errors_s_nama_gambar):
+            # 🔹 Hapus validasi error bawaan Django
+            self._errors['s_nama_gambar'].clear()
+            self.add_error('s_nama_gambar', "File yang kamu upload bukan gambar valid. Hanya JPG atau PNG diperbolehkan.")
+        # Contoh validasi antar field
+        if status == '1' and not desc:
+            raise forms.ValidationError("Kalau status aktif, deskripsi harus diisi!")
+
+        return cleaned_data
+
+
+    

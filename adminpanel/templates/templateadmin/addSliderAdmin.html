@@ -1,0 +1,41 @@
+{% extends 'templateadmin/templateadmin.html' %}
+{% load static %}
+{% block IsiAdmin %}
+<div class="container-fluid">
+  <h4 class="mb-4 text-primary font-weight-bold">Tambah Slider Banner</h4>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <!-- Gambar -->
+    <div class="form-group">
+      <label>Gambar Banner</label>
+      <input type="file" name="s_nama_gambar" class="form-control">
+      {% if errors.s_nama_gambar %}
+        <div class="text-danger small">{{ errors.s_nama_gambar }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Deskripsi -->
+    <div class="form-group">
+      <label>Deskripsi</label>
+      <textarea name="s_description" class="form-control" rows="3">{{ values.s_description }}</textarea>
+      {% if errors.s_description %}
+        <div class="text-danger small">{{ errors.s_description }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Status -->
+    <div class="form-group">
+      <label>Status</label>
+      <select name="n_istatus" class="form-control">
+        <option value="1" {% if values.n_istatus == '1' %}selected{% endif %}>Aktif</option>
+        <option value="0" {% if values.n_istatus == '0' %}selected{% endif %}>Non Aktif</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Simpan</button>
+    <a href="{% url 'adminpanel:slider-image' %}" class="btn btn-secondary">Batal</a>
+  </form>
+</div>
+{% endblock %}

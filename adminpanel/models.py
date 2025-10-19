@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 
+
 # Create your models here.
 
 class TmUser(models.Model):
@@ -16,3 +17,4 @@ class TmUser(models.Model):
     s_updated_by    = models.CharField(max_length=50)
     class Meta:
         db_table = 'tm_user'
+

@@ -7,11 +7,11 @@ from .views import IndexView
 urlpatterns = [
     path('adminRoot/', admin.site.urls),
     path('', IndexView.as_view(),name="index"),
-    path('testing/', IndexView.as_view(),name="testing"),
+    path('index/', IndexView.as_view(),name="index"),
     path('about/', include(('about.urls', 'about'), namespace='about')),
     path('contactPage/', include('contact.urls')),
     path('singlePost/', include('singlepost.urls')),
-    path('login/', include('adminpanel.urls')),
+    path('admin/', include('adminpanel.urls')),
 ]
 
 # Tambahkan ini di bawah sekali untuk upload image ke folder MEDIA. Cek konfigurasi di settings.py:

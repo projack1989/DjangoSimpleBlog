@@ -11,4 +11,8 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('forgot-password/', views.forgot_password, name='forgot-password'),
     path('logout/', views.logout, name='logout'),
+    path('slider-image/', views.sliderImage, name='slider-image'),
+    path('slider/edit/<int:s_id_slider_banner>/', views.editSlider, name='editSlider'),
+    path('slider/delete/<int:s_id_slider_banner>/', views.deleteSlider, name='deleteSlider'),
+    path('addSlider/', views.addSlider, name='addSlider'),
 ]
