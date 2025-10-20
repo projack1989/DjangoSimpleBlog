@@ -6,8 +6,10 @@ from django.contrib.auth.hashers import check_password
 from django.utils import timezone
 
 from .models import TmUser
-from .forms import RegisterTmUser, LoginTmUser, SliderBannerForm
+from .forms import RegisterTmUser, LoginTmUser, SliderBannerForm, Artikel1Form
 from blog import models as blog_models
+from about import models as about_models
+from about.forms import AboutForm
 
 import os
 
@@ -49,7 +51,7 @@ def blank_page(request):
         's_email': request.session.get('s_email'),
     }
     #cara cek semua session yang ada pada Django    
-    print('session:', request.session.__dict__)
+    #print('session:', request.session.__dict__)
     return render(request, 'templateadmin/blankPageAdmin.html', context)
 
 def master_form(request):
@@ -164,3 +166,157 @@ def addSlider(request):
         return redirect('adminpanel:slider-image')
 
     return render(request, 'templateadmin/addSliderAdmin.html')
+
+def about(request):
+    tampilAbout = about_models.About.objects.filter(n_istatus__in=['1','0']).values(
+        's_id_about','s_title','s_description','d_created_on','s_created_by','n_istatus'
+    ).order_by('-d_created_on')
+    #print(tampilAbout)
+    context ={
+        'tampilAbout': tampilAbout,
+        'header':'Halaman About',
+    }
+    #pass
+    #return HttpResponse("halaman sliderImage")
+    return render(request, 'templateadmin/listAboutAdmin.html',context)
+
+def editAbout(request, s_id_about):
+    about = get_object_or_404(about_models.About, s_id_about=s_id_about)
+    if request.method == 'POST':
+        form = AboutForm(request.POST, request.FILES, instance=about)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Data berhasil diperbarui!')
+            return redirect('adminpanel:about')
+        else:
+            messages.error(request, 'Periksa kembali form yang kamu isi.')
+    else:
+        form = AboutForm(instance=about)
+    return render(request, 'templateadmin/editAboutAdmin.html', {
+        'form': form,
+        'about': about
+    })
+
+def addAbout(request):
+    if request.method == 'POST':
+        # === VALIDASI MANUAL ===
+        form = AboutForm(request.POST)
+        #print('form errors:', form.errors)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Data berhasil diperbarui!')
+            return redirect('adminpanel:about')
+        else:
+            messages.error(request, 'Periksa kembali form yang kamu isi.')
+    else:
+        form = AboutForm()
+    context = {
+        'judul': 'Tambah Artikel About',
+        'form': form,
+    }
+        
+    return render(request, 'templateadmin/addAboutAdmin.html',context)
+
+    
+
+def addAbout2(request):
+    if request.method == 'POST':
+        s_title = request.POST.get('s_title', '').strip()
+        s_description = request.POST.get('s_description', '').strip()
+        n_istatus = request.POST.get('n_istatus', '1')
+        s_created_by = request.session.get('s_email')  # contoh ambil dari session
+
+        # === VALIDASI MANUAL ===
+        errors = {}
+
+        # Validasi title
+        if not s_title:
+            errors['s_title'] = "Judul tidak boleh kosong."
+        elif len(s_title) > 200:
+            errors['s_title'] = "Judul terlalu panjang, maksimal 200 karakter."
+
+        # Validasi deskripsi
+        if not s_description:
+            errors['s_description'] = "Deskripsi tidak boleh kosong."
+        elif len(s_description) < 10:
+            errors['s_description'] = "Deskripsi minimal 10 karakter."
+
+        # Jika ada error → tampilkan lagi form dengan pesan
+        if errors:
+            return render(request, 'templateadmin/addAboutAdmin.html', {
+                'errors': errors,
+                'values': request.POST
+            })
+
+        # Simpan ke database
+        about_models.About.objects.create(
+            s_title=s_title,
+            s_description=s_description,
+            s_created_by=s_created_by,
+            d_created_on=timezone.now().date(),
+            n_istatus=n_istatus
+        )
+
+        messages.success(request, "Artikel About berhasil ditambahkan!")
+        return redirect('adminpanel:about')
+
+    return render(request, 'templateadmin/addAboutAdmin.html')
+
+def article(request):
+    tampilArtikel = blog_models.Artikel1.objects.filter(n_istatus__in=['1','0']).values(
+        's_id_article','s_title','s_description','d_created_on','s_created_by','n_istatus'
+    ).order_by('-d_created_on')
+    print(tampilArtikel)
+    context ={
+        'tampilArtikel': tampilArtikel,
+        'header':'Halaman Article',
+    }
+    #pass
+    #return HttpResponse("halaman sliderImage")
+    return render(request, 'templateadmin/listArticleAdmin.html',context)
+
+def editArticle(request, s_id_article):
+    article = get_object_or_404(blog_models.Artikel1, s_id_article=s_id_article)
+    if request.method == 'POST':
+        form = Artikel1Form(request.POST, instance=article)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Edit Artikel berhasil diperbarui!')
+            return redirect('adminpanel:article')
+        else:
+            messages.error(request, 'Periksa kembali form yang kamu isi.')
+    else:
+        form = Artikel1Form(instance=article)
+        #print(form)
+    context = {
+        'judul': 'Edit Artikel',
+        'form': form,
+    }
+    return render(request, 'templateadmin/editArticleAdmin.html', context)
+
+def deleteArticle(request, s_id_article):
+    article = get_object_or_404(blog_models.Artikel1, s_id_article=s_id_article)
+    # Hapus data dari database
+    article.delete()
+    messages.success(request, "Data Artikel berhasil dihapus.")
+    return redirect('adminpanel:article')  # arah
+
+def addArticle(request):
+    if request.method == 'POST':
+        # === VALIDASI MANUAL ===
+        form = Artikel1Form(request.POST)
+        #print('form errors:', form.errors)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Data berhasil diperbarui!')
+            return redirect('adminpanel:article')
+        else:
+            messages.error(request, 'Periksa kembali form yang kamu isi.')
+    else:
+        form = Artikel1Form()
+    context = {
+        'judul': 'Tambah Artikel',
+        'form': form,
+    }
+
+    return render(request, 'templateadmin/addArticleAdmin.html',context)

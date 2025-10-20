@@ -1,0 +1,38 @@
+{% extends 'templateadmin/templateadmin.html' %}
+{% load static %}
+{% block IsiAdmin %}
+<div class="container-fluid">
+<h3>{{judul}}</h3>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+ <div class="form-group">
+    <label>{{ form.s_title.label }}</label>
+    <input type="text" name="s_title" class="form-control">
+    {% for error in form.s_title.errors %}
+      <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="form-group">
+    <label>{{ form.s_description.label }}</label>
+    <textarea name="s_description" class="form-control" rows="3"></textarea>
+    {% for error in form.s_description.errors %}
+      <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="form-group">
+    <label>{{ form.n_istatus.label }}</label>
+    {{ form.n_istatus }}
+    {% for error in form.n_istatus.errors %}
+      <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+</form>
+
+</div>
+{% endblock %}

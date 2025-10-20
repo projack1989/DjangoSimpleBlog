@@ -1,0 +1,85 @@
+{% extends 'templateadmin/templateadmin.html' %}
+{% load static %}
+{% block IsiAdmin %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">{{header}}</h1>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert 
+            {% if message.tags == 'success' %}alert-success
+            {% elif message.tags == 'error' %}alert-danger
+            {% elif message.tags == 'warning' %}alert-warning
+            {% else %}alert-info{% endif %}
+            alert-dismissible fade show mt-3" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <a href="{% url 'adminpanel:addArticle' %}" class="m-0 font-weight-bold text-primary">Add Article</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Judul</th>
+                            <th>Deskripsi</th>
+                            <th>Created By</th>
+                            <th>Created On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Judul</th>
+                            <th>Deskripsi</th>
+                            <th>Created By</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for tampil_Artikel in tampilArtikel %}
+                        <tr>
+                            <td>{{ tampil_Artikel.s_title }}</td>
+                            <td>{{ tampil_Artikel.s_description }}</td>
+                            <td>{{ tampil_Artikel.s_created_by }}</td>
+                            <td>
+
+                                {% if tampil_Artikel.n_istatus == '1' %}
+                                    Aktif
+                                {% elif tampil_Artikel.n_istatus == '0' %}
+                                    Non Aktif
+                                {% else %}
+                                    Tidak Diketahui
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'adminpanel:editArticle' tampil_Artikel.s_id_article %}" class="btn btn-success btn-circle btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'adminpanel:deleteArticle' tampil_Artikel.s_id_article %}" class="btn btn-danger btn-circle btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid ++-->
+{% endblock %}
