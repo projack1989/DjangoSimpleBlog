@@ -19,7 +19,7 @@
                         <tr>
                             <th>Judul</th>
                             <th>Deskripsi</th>
-                            <th>Created By</th>
+                            <th>Status</th>
                             <th>Created On</th>
                             <th>Action</th>
                         </tr>
@@ -28,7 +28,7 @@
                         <tr>
                             <th>Judul</th>
                             <th>Deskripsi</th>
-                            <th>Created By</th>
+                            <th>Status</th>
                             <th>Created On</th>
                             <th>Action</th>
                         </tr>
@@ -48,6 +48,7 @@
                                     Tidak Diketahui
                                 {% endif %}
                             </td>
+                            <td>{{ tampilAbout.d_created_on }}</td>
                             <td>
                                 <a href="{% url 'adminpanel:editAbout' tampilAbout.s_id_about %}" class="btn btn-success btn-circle btn-sm">
                                     <i class="fas fa-edit"></i>
